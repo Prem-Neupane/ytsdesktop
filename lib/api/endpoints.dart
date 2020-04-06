@@ -1,12 +1,27 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
 class EndPoint {
-  String _moviesList = 'https://yts.mx/api/v2/list_movies.json';
+  static String _moviesList = 'https://yts.mx/api/v2/list_movies.json?';
   String _movieDetails = 'https://yts.mx/api/v2/movie_details.json';
   String _movieSuggestions = 'https://yts.mx/api/v2/movie_suggestions.json';
   String _movieComments = 'https://yts.mx/api/v2/movie_comments.json';
   String _movieReviews = 'https://yts.mx/api/v2/movie_reviews.json';
-  String _movieParentalGuides =
+  static String _movieParentalGuides =
       'https://yts.mx/api/v2/movie_parental_guides.json';
-  String upcomingList = 'https://yts.mx/api/v2/list_upcoming.json';
+
+  //this method refines the query by eliminating
+  //keys having null value
+  static String _parameterRefiner(Map<String, dynamic> map) {
+    String _refined = '';
+    map.forEach((key, value) {
+      if (value != null) {
+        _refined += key + '=' + value.toString() + '&';
+      }
+    });
+
+    return _refined.substring(0, _refined.length - 1);
+  }
 
   static Future moviesList(
       {int limit,
@@ -17,6 +32,21 @@ class EndPoint {
       String genre,
       String sortBy,
       String orderBy,
-      bool withRtRating}) async {}
-}
+      bool withRtRating}) async {
+    Map<String, dynamic> _parameters = {
+      'limit': limit,
+      'page': page,
+      'quality': quality,
+      'minimum_rating': minimumRating,
+      'query_term': queryTerm,
+      'genre': genre,
+      'sort_by': sortBy,
+      'order_by': orderBy,
+      'with_rt_rating': withRtRating
+    };
 
+    http.Response response =
+        await http.get(_moviesList + _parameterRefiner(_parameters));
+    return response;
+  }
+}
