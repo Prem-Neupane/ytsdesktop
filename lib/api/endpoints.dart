@@ -55,4 +55,7 @@ class EndPoint {
       print(error);
     }
   }
+
+  //to get movie details by id
+  
 }

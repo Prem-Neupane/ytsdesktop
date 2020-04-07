@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ytsdesktop/api/accepted_parameter_types.dart';
 import 'package:ytsdesktop/api/endpoints.dart';
+import 'package:ytsdesktop/screens/detailed_page/detailed_page.dart';
 import 'package:ytsdesktop/screens/home/top_downloads/top_downloads_provider.dart';
 import 'package:ytsdesktop/utils/custom_shadows.dart';
 import 'package:ytsdesktop/utils/screen_dimension.dart';
@@ -38,7 +39,7 @@ class TopDownloads extends StatelessWidget {
       List<String> title = [];
       List<List<dynamic>> genres = [];
       List<String> description = [];
-
+      provider.setMovieList = _decoded['data']['movies'];
       for (var each in _decoded['data']['movies']) {
         images.add(each['medium_cover_image']);
         title.add(each['title_long']);
@@ -87,15 +88,19 @@ class TopDownloads extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: Colors.black54,
-                        gradient: LinearGradient(colors: [
-                          Colors.black12,
-                          Colors.black,
-                          Colors.black12
-
-                        ],
-                        stops: [0,0.5,1],
-                        begin: Alignment.centerLeft,end: Alignment.centerRight
-                        )),
+                        gradient: LinearGradient(
+                            colors: [
+                              Colors.transparent,
+                              Colors.black,
+                              Colors.transparent
+                            ],
+                            stops: [
+                              0.1,
+                              0.5,
+                              0.9
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight)),
                     width: _dimension.percent(value: 50, isHeight: false),
                     child: _popularDownloads()),
               ),
@@ -127,7 +132,8 @@ class TopDownloads extends StatelessWidget {
               ///
               ///for movie details
               Positioned(
-                child: _movieDetails(provider: _topDownloadsProvider),
+                child: _movieDetails(
+                    provider: _topDownloadsProvider, context: context),
                 left: 0,
                 bottom: 0,
               ),
@@ -151,7 +157,26 @@ class TopDownloads extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+
+              ///for refresh button
+              Positioned(
+                right: 0,
+                top: 0,
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                  hoverColor: Colors.green,
+                  child: Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    _apiCall(_topDownloadsProvider);
+                  },
+                ),
+              ),
             ],
           );
         },
@@ -162,7 +187,8 @@ class TopDownloads extends StatelessWidget {
   ///
   ///returns movie details like description
   ///title genre etc
-  Widget _movieDetails({@required TopDownloadsProvider provider}) {
+  Widget _movieDetails(
+      {@required TopDownloadsProvider provider, BuildContext context}) {
     return Container(
       padding: EdgeInsets.all(10),
       height: _dimension.percent(value: 45, isHeight: true),
@@ -173,10 +199,26 @@ class TopDownloads extends StatelessWidget {
         children: [
           ///for title
           InkWell(
-            onTap: (){
+            onTap: () {
+              Map<String, dynamic> _currentMap =
+                  provider.movieList[int.parse(provider.currentButton) - 1];
               //goto detailed page to download the movie
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailedPage(
+                            titleShort: _currentMap['title'],
+                            descriptionFull: _currentMap['description_full'],
+                            rating:
+                                double.parse(_currentMap['rating'].toString()),
+                            runtime: _currentMap['runtime'],
+                            year: _currentMap['year'],
+                            torrents: _currentMap['torrents'],
+                            imageUrl: _currentMap['medium_cover_image'],
+                            genres: _currentMap['genres'],
+                          )));
             },
-                      child: SizedBox(
+            child: SizedBox(
               height: _dimension.percent(value: 10, isHeight: true),
               child: Text(
                 provider.title[int.parse(provider.currentButton) - 1],
@@ -284,9 +326,9 @@ class TopDownloads extends StatelessWidget {
   Text _popularDownloads() {
     return Text('Top Downloads',
         style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 40,
-            shadows: textShadow(color: Colors.black)));
+            shadows: textShadow(color: Colors.grey[200])));
   }
 }

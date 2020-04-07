@@ -7,6 +7,13 @@ class TopDownloadsProvider with ChangeNotifier {
     _init = value;
   }
 
+
+  List _movieList;
+  List get movieList=>_movieList;
+  set setMovieList(List list){
+    _movieList=list;
+  }
+
   String _currentButton = '1';
   String get currentButton => _currentButton;
   set setCurrentButton(String id) {
