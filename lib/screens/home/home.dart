@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ytsdesktop/screens/home/bottom_section/bottom_section.dart';
 import 'package:ytsdesktop/screens/home/home_provider.dart';
 import 'package:ytsdesktop/screens/home/top_downloads/top_downloads.dart';
 import 'package:ytsdesktop/utils/screen_dimension.dart';
@@ -28,7 +29,11 @@ class Home extends StatelessWidget {
                       height: _dimension.percent(value: 70, isHeight: true),
                       width: _dimension.width,
                       child: TopDownloads(),
-                    )
+                    ),
+                    SizedBox(
+                        // height: _dimension.percent(value: 70, isHeight: true),
+                        width: _dimension.width,
+                        child: BottomSection())
                   ],
                 ),
               ));

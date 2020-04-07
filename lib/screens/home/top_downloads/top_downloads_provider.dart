@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class TopDownloadsProvider with ChangeNotifier {
-  bool _init=false;
-  get hasInit=>_init;
-  set setInit(bool value){
-    _init=value;
+  bool _init = false;
+  get hasInit => _init;
+  set setInit(bool value) {
+    _init = value;
   }
+
   String _currentButton = '1';
+  String get currentButton => _currentButton;
   set setCurrentButton(String id) {
     _currentButton = id;
     notifyListeners();
@@ -19,7 +21,7 @@ class TopDownloadsProvider with ChangeNotifier {
 
   ///
   ///title
-  List<String> _title = [];
+  List<String> _title = ['', '', '', '', ''];
   List<String> get title => _title;
   set setTitleList(List<String> titleList) {
     _title = titleList;
@@ -28,7 +30,7 @@ class TopDownloadsProvider with ChangeNotifier {
 
   ///
   ///description
-  List<String> _description = [];
+  List<String> _description = ['', '', '', '', ''];
   List<String> get description => _description;
   set setDescriptionList(List<String> list) {
     _description = list;
@@ -37,9 +39,9 @@ class TopDownloadsProvider with ChangeNotifier {
 
   ///
   ///genre
-  List<String> _genre = [];
-  List<String> get genre => _genre;
-  set setGenreList(List<String> list) {
+  List<List<dynamic>> _genre = [[], [], [], [], []];
+  List<List<dynamic>> get genre => _genre;
+  set setGenreList(List<List<dynamic>> list) {
     _genre = list;
     notifyListeners();
   }
@@ -52,7 +54,8 @@ class TopDownloadsProvider with ChangeNotifier {
     _title = list;
     notifyListeners();
   }
-   ///
+
+  ///
   ///image urls
   List<String> _urls = [];
   List<String> get urls => _urls;
@@ -63,20 +66,34 @@ class TopDownloadsProvider with ChangeNotifier {
 
   ///
   ///image
-  Image _image;
+  Image _image = Image.asset(
+    'assets/output.png',
+    fit: BoxFit.contain,
+    repeat: ImageRepeat.repeat,
+  );
   Image get image => _image;
   set setImage(String url) {
     _image = Image.network(
       url,
       fit: BoxFit.contain,
+      repeat: ImageRepeat.repeat,
       loadingBuilder: (context, child, loaded) {
         if (loaded == null) return child;
         return loaded != null
-            ? Center(
-                child: CircularProgressIndicator(
-                  value:
-                      loaded.cumulativeBytesLoaded / loaded.expectedTotalBytes,
-                ),
+            ? Stack(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/output.png',
+                    fit: BoxFit.contain,
+                    repeat: ImageRepeat.repeat,
+                  ),
+                  Center(
+                    child: CircularProgressIndicator(
+                      value: loaded.cumulativeBytesLoaded /
+                          loaded.expectedTotalBytes,
+                    ),
+                  ),
+                ],
               )
             : null;
       },

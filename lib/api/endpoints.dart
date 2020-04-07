@@ -45,8 +45,14 @@ class EndPoint {
       'with_rt_rating': withRtRating
     };
 
-    http.Response response =
-        await http.get(_moviesList + _parameterRefiner(_parameters));
-    return response;
+    http.Response response;
+    try {
+      response = await http.get(_moviesList + _parameterRefiner(_parameters));
+      return response;
+    } on Exception catch (exception) {
+      print(exception);
+    } on Error catch (error) {
+      print(error);
+    }
   }
 }
