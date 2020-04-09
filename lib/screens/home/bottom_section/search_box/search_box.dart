@@ -27,7 +27,7 @@ class _SearchBoxState extends State<SearchBox> {
               _searchBoxProvider.setSearchWidget = InkWell(
                   onTap: () {
                     _searchBoxProvider.setSearchWidget =
-                      AfterClickSearch();
+                      AfterClickSearch(_searchBoxProvider);
                   },
                   borderRadius: BorderRadius.circular(100),
                   child: _showOnlySearch());

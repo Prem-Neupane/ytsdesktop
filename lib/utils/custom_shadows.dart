@@ -13,9 +13,9 @@ List<Shadow> textShadow({Color color}) {
 List<BoxShadow> normalShadow({Color color}) {
   return [
     BoxShadow(
-        color: color != null ? color : Colors.grey,
-        offset: Offset(2, 2),
-        blurRadius: 5,
-        spreadRadius: 2)
+        color: color != null ? color : Colors.grey[300],
+        offset: Offset(1, 1),
+        blurRadius: 10,
+        spreadRadius: 1.5)
   ];
 }
