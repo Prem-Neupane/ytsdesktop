@@ -40,6 +40,7 @@ class _AfterClickSearchState extends State<AfterClickSearch> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        autofocus: true,
                         onChanged: (val) {
                           if (val == '') {
                             _provider.setSearchBodyList = [Container()];
@@ -101,7 +102,7 @@ class _AfterClickSearchState extends State<AfterClickSearch> {
               imageUrl: each['medium_cover_image'],
               titleShort: each['title'],
               descriptionFull: each['description_full'],
-              rating: each['rating'],
+              rating: double.parse(each['rating'].toString()),
               runtime: each['runtime'],
               year: each['year'],
               torrents: each['torrents'],
