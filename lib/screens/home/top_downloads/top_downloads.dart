@@ -69,7 +69,7 @@ class TopDownloads extends StatelessWidget {
 
           if (_topDownloadsProvider.hasInit == false) {
             _topDownloadsProvider.setInit = true;
-            // _apiCall(_topDownloadsProvider);
+            _apiCall(_topDownloadsProvider);
           }
           return Stack(
             children: [
