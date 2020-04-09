@@ -427,9 +427,10 @@ class DetailedPage extends StatelessWidget {
       child: Column(
         children: [
           ///for image
-          SizedBox(
-            width: _dimension.percent(value: 30, isHeight: null),
+          Container(
+            // width: _dimension.percent(value: 30, isHeight: null),
             height: _dimension.percent(value: 66, isHeight: true),
+            decoration: BoxDecoration(boxShadow: normalShadow(color: Colors.green[900],offset: Offset(3,3))),
             child: Image.network(
               imageUrl,
               fit: BoxFit.contain,
